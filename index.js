@@ -11,7 +11,7 @@ function createBot(botName, interval) {
     const bot = mineflayer.createBot({
         host: 'Trmanj.aternos.me',
         port: 59562, // ATERNOS'TAN KONTROL ET, DEĞİŞTİYSE DÜZELT!
-        username: Mirac_Olumsuz,
+        username: 'Mirac_Olumsuz',
         version: false // ViaBackwards için otomatik sürüm
     });
 
