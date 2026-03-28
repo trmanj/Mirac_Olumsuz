@@ -1,41 +1,42 @@
 const mineflayer = require('mineflayer');
+const http = require('http');
 
-function createBot() {
+// Render'ı uyanık tutan sunucu
+http.createServer((req, res) => {
+    res.write('Botlar Aktif!');
+    res.end();
+}).listen(3000);
+
+function createBot(name, interval) {
     const bot = mineflayer.createBot({
-        host: 'trmanj.aternos.me',
-        port: 59562,
-        username: 'Mirac_Olumsuz',
-        version: '1.20.1' // Sunucu sürümün 1.20.1 değilse burayı güncelle!
+        host: 'Trmanj.aternos.me',
+        port: 59562, // BURAYI ATERNOS'TAKİ GÜNCEL PORTLA KONTROL ET!
+        username: Mirac_Olumsuz,
+        version: false // ViaBackwards için en iyisi bu, sürümü otomatik seçer
     });
 
     bot.on('spawn', () => {
-        console.log('>> Mirac_Olumsuz sunucuya sızdı! İkinci nöbetçi aktif.');
+        console.log(`>> [BAŞARILI] ${name} içeri girdi ve pistonu buldu!`);
     });
 
-    // --- KRİTİK: DÜŞERSE 5 SANİYEDE GERİ DÖN ---
     bot.on('end', () => {
-        console.log('!! Mirac_Olumsuz koptu, 5 saniye içinde geri fırlıyor...');
-        setTimeout(createBot, 5000); 
+        console.log(`!! [KOPMA] ${name} düştü, 5 saniye sonra dönüyor...`);
+        setTimeout(() => createBot(name, interval), 5000);
     });
 
     bot.on('error', (err) => {
-        console.log('>> Mirac_Olumsuz Hatası: ' + err.message);
-        setTimeout(createBot, 10000); // Hata durumunda 10 saniye bekle
+        console.log(`>> [HATA] ${name}: ${err.message}`);
     });
 
-    // --- PLANLI TAZELEME: 31 SAATTE BİR ---
+    // Planlı Tazeleme (Senin istediğin 17 ve 31 saat)
     setInterval(() => {
-        console.log('>> 31 saat doldu, Mirac_Olumsuz tazelenmek için çıkış yapıyor...');
+        console.log(`>> [TAZELEME] ${name} çık-gir yapıyor...`);
         bot.quit();
-    }, 111600000); // 31 Saat = 111.600.000 ms
+    }, interval);
 }
 
-// Botu başlat
-createBot();
-
-// Render'ı uyanık tutan sunucu (Bunun portunu 3001 yapabilirsin çakışmasın diye)
-const http = require('http');
-http.createServer((req, res) => {
-    res.write('Mirac_Olumsuz 7/24 Aktif!');
-    res.end();
-}).listen(3001); 
+// Botları Başlat
+createBot('Mirac_Bot', 61200000); // 17 Saat
+setTimeout(() => {
+    createBot('Mirac_Olumsuz', 111600000); // 31 Saat
+}, 30000); // Arada 30 sn olsun
