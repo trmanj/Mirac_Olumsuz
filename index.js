@@ -1,32 +1,15 @@
-const express = require('express');
 const mineflayer = require('mineflayer');
-const app = express();
+const bot = mineflayer.createBot({
+    host: 'ADRESIN.aternos.me', // Kendi IP'ni yaz!
+    username: 'Mirac_Olumsuz',
+    version: "1.20.1"
+});
 
-app.get('/', (req, res) => res.send('Bot Sistemi Aktif!'));
-app.listen(3000, '0.0.0.0');
+bot.on('spawn', () => {
+    console.log("✅ Mirac_Olumsuz vagonuna kuruldu!");
+    setInterval(() => {
+        bot.look(Math.random() * 6.28, (Math.random() - 0.5) * 3.14);
+    }, 25000); // Bu da 25 saniyede bir baksın, senkron bozulmasın
+});
 
-function createBot() {
-    const bot = mineflayer.createBot({
-        host: 'trmanj.aternos.me',
-        port: 59562, // << BURAYI KONTROL ET! Değişmiş olabilir.
-        username: 'Mirac_Olumsuz',
-        version: false,
-        auth: 'offline',
-        checkTimeoutInterval: 30000
-    });
-
-    bot.on('spawn', () => {
-        console.log('✅ ZAFER! Mirac_Olumsuz oyuna sızdı!');
-    });
-
-    bot.on('error', (err) => {
-        console.log('❌ Bağlantı Hatası: ' + err.message);
-    });
-
-    bot.on('end', () => {
-        console.log('⚠️ Bağlantı koptu, 10sn sonra diriliyorum...');
-        setTimeout(createBot, 10000);
-    });
-}
-
-createBot();
+bot.on('end', () => setTimeout(() => process.exit(), 5000));
