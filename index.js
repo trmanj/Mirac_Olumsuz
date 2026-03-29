@@ -1,66 +1,32 @@
+const express = require('express');
 const mineflayer = require('mineflayer');
-const http = require('http');
+const app = express();
 
-// Render'ı açık tutan ana motor
-http.createServer((req, res) => {
-    res.write('Mirac Bot Ordusu Aktif!');
-    res.end();
-}).listen(3000);
+app.get('/', (req, res) => res.send('Bot Sistemi Aktif!'));
+app.listen(3000, '0.0.0.0');
 
-// BOT 1: Mirac_Bot (17 Saatlik Periyot)
-function startMiracBot() {
-    const bot1 = mineflayer.createBot({
-        host: 'Trmanj.aternos.me',
-        port: 59562,
-        username: 'Mirac_Afk',
-        version: false
+function createBot() {
+    const bot = mineflayer.createBot({
+        host: 'trmanj.aternos.me',
+        port: 59562, // << BURAYI KONTROL ET! Değişmiş olabilir.
+        username: 'Mirac_Olumsuz',
+        version: false,
+        auth: 'offline',
+        checkTimeoutInterval: 30000
     });
 
-    bot1.on('spawn', () => {
-        console.log(">> [OK] Mirac_Bot içeri sızdı, pistonu kaptı!");
-        bot1.clearControlStates(); // Hatalı hareket paketlerini sıfırlar
+    bot.on('spawn', () => {
+        console.log('✅ ZAFER! Mirac_Olumsuz oyuna sızdı!');
     });
 
-    bot1.on('end', () => {
-        console.log("!! [HATA] Mirac_Bot düştü, 10sn sonra dönüyor...");
-        setTimeout(startMiracBot, 10000);
+    bot.on('error', (err) => {
+        console.log('❌ Bağlantı Hatası: ' + err.message);
     });
 
-    // 17 Saat sonra tazeleme (61.200.000 ms)
-    setInterval(() => {
-        if (bot1.quit) bot1.quit();
-    }, 61200000);
+    bot.on('end', () => {
+        console.log('⚠️ Bağlantı koptu, 10sn sonra diriliyorum...');
+        setTimeout(createBot, 10000);
+    });
 }
 
-// BOT 2: Mirac_Olumsuz (31 Saatlik Periyot)
-function startMiracOlumsuz() {
-    const bot2 = mineflayer.createBot({
-        host: 'Trmanj.aternos.me',
-        port: 59562,
-        username: 'Mirac_Olumlu',
-        version: false
-    });
-
-    bot2.on('spawn', () => {
-        console.log(">> [OK] Mirac_Olumsuz içeri sızdı, nöbeti devraldı!");
-        bot2.clearControlStates();
-    });
-
-    bot2.on('end', () => {
-        console.log("!! [HATA] Mirac_Olumsuz düştü, 10sn sonra dönüyor...");
-        setTimeout(startMiracOlumsuz, 10000);
-    });
-
-    // 31 Saat sonra tazeleme (111.600.000 ms)
-    setInterval(() => {
-        if (bot2.quit) bot2.quit();
-    }, 111600000);
-}
-
-// Botları birbirinden bağımsız başlatıyoruz
-startMiracAfk();
-
-setTimeout(() => {
-    startMiracOlumlu();
-}, 60000); // İkinci botu 1 dakika sonra sokuyoruz ki sunucu "n'oluyor?" demesin.
-        
+createBot();
