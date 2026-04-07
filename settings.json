@@ -1,8 +1,8 @@
 {
   "name": "Mirac_Olumsuz",
   "server": {
-    "ip": "sunucun.aternos.me",
-    "port": 25565,
+    "ip": "trmanj.aternos.me",
+    "port": 59562,
     "version": "1.21.4"
   },
   "bot": {
