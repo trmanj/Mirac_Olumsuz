@@ -2,8 +2,13 @@
   "name": "mirac-olumsuz",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "express": "^4.18.2",
-    "mineflayer": "^4.20.0"
+    "mineflayer": "^4.20.0",
+    "mineflayer-pathfinder": "^1.4.4",
+    "prismarine-viewer": "^1.27.0"
   }
 }
