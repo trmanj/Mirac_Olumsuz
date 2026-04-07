@@ -1,0 +1,12 @@
+{
+  "name": "Mirac_Olumsuz",
+  "server": {
+    "ip": "sunucun.aternos.me",
+    "port": 25565,
+    "version": "1.21.4"
+  },
+  "bot": {
+    "username": "MiracOlumsuz",
+    "auth": "offline"
+  }
+}
